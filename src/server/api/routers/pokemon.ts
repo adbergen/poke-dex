@@ -7,10 +7,13 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 export const pokemonRouter = createTRPCRouter({
   list: publicProcedure
     .input(
-      z.object({
-        limit: z.number().min(1).max(100).default(20),
-        offset: z.number().min(0).default(0)
-      }).optional().default(() => ({ limit: 20, offset: 0 }))
+      z
+        .object({
+          limit: z.number().min(1).max(100).default(20),
+          offset: z.number().min(0).default(0)
+        })
+        .optional()
+        .default(() => ({ limit: 20, offset: 0 }))
     )
     .query(async ({ input }) => {
       try {
