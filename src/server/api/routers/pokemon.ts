@@ -56,5 +56,29 @@ export const pokemonRouter = createTRPCRouter({
       console.error(`Failed to fetch pokemon ${input.nameOrId}:`, error)
       throw new Error(`Failed to fetch Pokémon ${input.nameOrId}`)
     }
-  })
+  }),
+
+  search: publicProcedure
+    .input(
+      z.object({
+        query: z.string().min(1, 'Search query is required'),
+        limit: z.number().min(1).max(50).default(20)
+      })
+    )
+    .query(async ({ input }) => {
+      try {
+        const result = await pokeAPI.searchPokemon(input.query, input.limit)
+
+        return {
+          pokemon: result.results,
+          count: result.count,
+          query: result.query,
+          hasMore: result.hasMore,
+          isEmpty: result.results.length === 0
+        }
+      } catch (error) {
+        console.error('Failed to search pokemon:', error)
+        throw new Error('Failed to search Pokémon')
+      }
+    })
 })
