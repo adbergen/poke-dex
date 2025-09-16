@@ -77,10 +77,10 @@ export default function PokemonCard({
               }}
             />
 
-            {/* Favorite Button */}
+            {/* Favorite Button - Always visible */}
             {showFavoriteButton && (
               <div
-                className="absolute top-2 right-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                className="absolute top-2 right-2"
                 onClick={handleFavoriteClick}
               >
                 <FavoriteButton
