@@ -1,11 +1,15 @@
 'use client'
 
+import { useState } from 'react'
+
 import Image from 'next/image'
 
 import { api } from '@/trpc/client'
 import { X } from 'lucide-react'
 
+import FavoriteButton from './FavoriteButton'
 import { PokemonDetailSkeleton } from './LoadingSkeleton'
+import LoginPrompt from './LoginPrompt'
 import { Button } from './ui/button'
 
 interface PokemonDetailModalProps {
@@ -19,6 +23,8 @@ export default function PokemonDetailModal({
   isOpen,
   onClose
 }: PokemonDetailModalProps) {
+  const [loginPromptOpen, setLoginPromptOpen] = useState(false)
+
   const {
     data: pokemon,
     isLoading,
@@ -27,6 +33,10 @@ export default function PokemonDetailModal({
     { nameOrId: pokemonName },
     { enabled: isOpen && !!pokemonName }
   )
+
+  const handleAuthRequired = () => {
+    setLoginPromptOpen(true)
+  }
 
   if (!isOpen) return null
 
@@ -90,6 +100,19 @@ export default function PokemonDetailModal({
         >
           <X className="h-4 w-4" />
         </Button>
+
+        {/* Favorite Button */}
+        {pokemon && (
+          <div className="absolute top-4 right-16 z-10">
+            <FavoriteButton
+              pokemonId={pokemon.id.toString()}
+              pokemonName={pokemon.name}
+              pokemonSprite={pokemon.sprite}
+              onAuthRequired={handleAuthRequired}
+              size="md"
+            />
+          </div>
+        )}
 
         <div className="p-6">
           {isLoading && <PokemonDetailSkeleton />}
@@ -212,6 +235,13 @@ export default function PokemonDetailModal({
           )}
         </div>
       </div>
+
+      {/* Login Prompt */}
+      <LoginPrompt
+        isOpen={loginPromptOpen}
+        onClose={() => setLoginPromptOpen(false)}
+        message="Log in to save your favorite Pokémon!"
+      />
     </div>
   )
 }
