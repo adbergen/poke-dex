@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
+import { TRPCProvider } from '@/trpc/client'
+
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import Navigation from '@/components/Navigation'
 
 import './globals.css'
@@ -28,8 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Navigation />
-        {children}
+        <ErrorBoundary>
+          <TRPCProvider>
+            <Navigation />
+            <main className="min-h-screen">{children}</main>
+          </TRPCProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )
