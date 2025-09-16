@@ -25,8 +25,8 @@ export default function Navigation() {
     router.push('/')
   }
 
-  // Show loading state during hydration to prevent mismatch
-  if (!isHydrated) {
+  // Show loading state during hydration and session loading to prevent mismatch
+  if (!isHydrated || isPending) {
     return (
       <nav className="border-b bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -64,24 +64,20 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center space-x-4">
-            {isPending || !session ? (
+            {!session ? (
               <>
                 <Button
                   variant="ghost"
                   size="sm"
-                  disabled={isPending}
-                  className={isPending ? 'opacity-50' : ''}
-                  asChild={!isPending}
+                  asChild
                 >
-                  {isPending ? 'Sign in' : <Link href="/login">Sign in</Link>}
+                  <Link href="/login">Sign in</Link>
                 </Button>
                 <Button
                   size="sm"
-                  disabled={isPending}
-                  className={isPending ? 'opacity-50' : ''}
-                  asChild={!isPending}
+                  asChild
                 >
-                  {isPending ? 'Sign up' : <Link href="/register">Sign up</Link>}
+                  <Link href="/register">Sign up</Link>
                 </Button>
               </>
             ) : (
