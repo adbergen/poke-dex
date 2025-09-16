@@ -63,19 +63,28 @@ export default function RegisterPage() {
     setError('')
 
     try {
-      await signUp.email({
+      const response = await signUp.email({
         name: data.name,
         email: data.email,
         password: data.password
       })
-      router.push('/')
-    } catch (err) {
-      console.error('Registration error:', err)
-      if (err instanceof Error && err.message.includes('already exists')) {
-        setError('An account with this email already exists.')
-      } else {
-        setError('Failed to create account. Please try again.')
+
+      if (response.error) {
+        console.error('Registration error:', response.error)
+        if (response.error.message?.includes('already exists')) {
+          setError('An account with this email already exists.')
+        } else {
+          setError(response.error.message || 'Failed to create account. Please try again.')
+        }
+        return
       }
+
+      if (response.data) {
+        router.push('/')
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err)
+      setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
     }
