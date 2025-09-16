@@ -1,0 +1,33 @@
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Generated files
+*.tsbuildinfo
+.turbo/
+
+# Database
+migrations/
+drizzle.config.ts
+
+# Config files that should remain as-is
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Environment files
+.env*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
