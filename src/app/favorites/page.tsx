@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { api } from '@/trpc/client'
 import { Heart, Loader2 } from 'lucide-react'
 
-import FavoriteButton from '@/components/FavoriteButton'
 import LoginPrompt from '@/components/LoginPrompt'
 import PokemonCard from '@/components/PokemonCard'
 import PokemonDetailModal from '@/components/PokemonDetailModal'
@@ -42,10 +41,6 @@ export default function FavoritesPage() {
   const handleModalClose = () => {
     setModalOpen(false)
     setSelectedPokemon(null)
-  }
-
-  const handleAuthRequired = () => {
-    setLoginPromptOpen(true)
   }
 
   if (isLoading) {
@@ -156,26 +151,13 @@ export default function FavoritesPage() {
           }
 
           return (
-            <div
+            <PokemonCard
               key={pokemon.id}
-              className="relative"
-            >
-              <PokemonCard
-                pokemon={pokemonData}
-                onClick={() => handlePokemonClick(pokemonData)}
-                priority={false}
-              />
-              {/* Favorite button overlay */}
-              <div className="absolute top-2 right-2">
-                <FavoriteButton
-                  pokemonId={pokemon.id}
-                  pokemonName={pokemon.name}
-                  pokemonSprite={pokemon.sprite}
-                  onAuthRequired={handleAuthRequired}
-                  size="sm"
-                />
-              </div>
-            </div>
+              pokemon={pokemonData}
+              onClick={() => handlePokemonClick(pokemonData)}
+              priority={false}
+              showFavoriteButton={true}
+            />
           )
         })}
       </div>
