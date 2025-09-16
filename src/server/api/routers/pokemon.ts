@@ -58,6 +58,37 @@ export const pokemonRouter = createTRPCRouter({
     }
   }),
 
+  getByName: publicProcedure.input(z.object({ nameOrId: z.string() })).query(async ({ input }) => {
+    try {
+      const pokemon = await pokeAPI.getPokemonDetail(input.nameOrId)
+      return {
+        id: pokemon.id,
+        name: pokemon.name,
+        height: pokemon.height,
+        weight: pokemon.weight,
+        baseExperience: pokemon.base_experience,
+        sprite:
+          pokemon.sprites.other?.['official-artwork']?.front_default ||
+          pokemon.sprites.front_default ||
+          '/pokeball-placeholder.png',
+        sprites: pokemon.sprites,
+        types: pokemon.types.map((t) => t.type.name),
+        abilities: pokemon.abilities.map((a) => ({
+          name: a.ability.name,
+          isHidden: a.is_hidden
+        })),
+        stats: pokemon.stats.map((s) => ({
+          name: s.stat.name,
+          baseStat: s.base_stat,
+          effort: s.effort
+        }))
+      }
+    } catch (error) {
+      console.error(`Failed to fetch pokemon ${input.nameOrId}:`, error)
+      throw new Error(`Failed to fetch Pokémon ${input.nameOrId}`)
+    }
+  }),
+
   search: publicProcedure
     .input(
       z.object({
