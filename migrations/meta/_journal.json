@@ -8,6 +8,13 @@
       "when": 1758025734032,
       "tag": "0000_fat_abomination",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758044835825,
+      "tag": "0001_omniscient_magdalene",
+      "breakpoints": true
     }
   ]
 }

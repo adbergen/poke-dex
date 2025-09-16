@@ -59,3 +59,14 @@ export const verification = pgTable('verification', {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull()
 })
+
+export const favorite = pgTable('favorite', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  pokemonId: text('pokemon_id').notNull(),
+  pokemonName: text('pokemon_name').notNull(),
+  pokemonSprite: text('pokemon_sprite'),
+  createdAt: timestamp('created_at').defaultNow().notNull()
+})

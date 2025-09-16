@@ -48,14 +48,23 @@ export default function LoginPage() {
     setError('')
 
     try {
-      await signIn.email({
+      const response = await signIn.email({
         email: data.email,
         password: data.password
       })
-      router.push('/')
+
+      if (response.error) {
+        console.error('Login error:', response.error)
+        setError(response.error.message || 'Invalid email or password. Please try again.')
+        return
+      }
+
+      if (response.data) {
+        router.push('/')
+      }
     } catch (err) {
-      console.error('Login error:', err)
-      setError('Invalid email or password. Please try again.')
+      console.error('Unexpected error:', err)
+      setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
     }
