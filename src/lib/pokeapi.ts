@@ -33,6 +33,24 @@ export interface PokemonType {
   }
 }
 
+export interface PokemonAbility {
+  ability: {
+    name: string
+    url: string
+  }
+  is_hidden: boolean
+  slot: number
+}
+
+export interface PokemonStat {
+  base_stat: number
+  effort: number
+  stat: {
+    name: string
+    url: string
+  }
+}
+
 export interface PokemonDetail {
   id: number
   name: string
@@ -40,6 +58,8 @@ export interface PokemonDetail {
   weight: number
   sprites: PokemonSprites
   types: PokemonType[]
+  abilities: PokemonAbility[]
+  stats: PokemonStat[]
   base_experience: number
   order: number
 }
@@ -73,6 +93,26 @@ export interface PokemonFilterResponse {
   count: number
   type: string | null
   hasMore: boolean
+}
+
+export interface PokemonDetailResponse {
+  id: number
+  name: string
+  height: number
+  weight: number
+  baseExperience: number
+  sprite: string
+  sprites: PokemonSprites
+  types: string[]
+  abilities: Array<{
+    name: string
+    isHidden: boolean
+  }>
+  stats: Array<{
+    name: string
+    baseStat: number
+    effort: number
+  }>
 }
 
 export class PokeAPIService {

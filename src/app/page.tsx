@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import FilterControls from '@/components/FilterControls'
+import PokemonDetailModal from '@/components/PokemonDetailModal'
 import PokemonFilteredResults from '@/components/PokemonFilteredResults'
 import PokemonGrid from '@/components/PokemonGrid'
 
@@ -10,10 +11,16 @@ export default function Home() {
   const [selectedPokemon, setSelectedPokemon] = useState<{ id: number; name: string } | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedType, setSelectedType] = useState<string | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
 
   const handlePokemonClick = (pokemon: { id: number; name: string }) => {
     setSelectedPokemon(pokemon)
-    console.log('Selected Pokemon:', pokemon)
+    setModalOpen(true)
+  }
+
+  const handleModalClose = () => {
+    setModalOpen(false)
+    setSelectedPokemon(null)
   }
 
   const handleSearchChange = (query: string) => {
@@ -60,12 +67,13 @@ export default function Home() {
         <PokemonGrid onPokemonClick={handlePokemonClick} />
       )}
 
+      {/* Pokemon Detail Modal */}
       {selectedPokemon && (
-        <div className="mt-8 rounded-lg bg-blue-50 p-4">
-          <p className="text-blue-800">
-            Selected: {selectedPokemon.name} (ID: {selectedPokemon.id})
-          </p>
-        </div>
+        <PokemonDetailModal
+          pokemonName={selectedPokemon.name}
+          isOpen={modalOpen}
+          onClose={handleModalClose}
+        />
       )}
     </div>
   )
