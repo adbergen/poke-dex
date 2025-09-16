@@ -80,5 +80,72 @@ export const pokemonRouter = createTRPCRouter({
         console.error('Failed to search pokemon:', error)
         throw new Error('Failed to search Pokémon')
       }
+    }),
+
+  types: publicProcedure.query(async () => {
+    try {
+      const result = await pokeAPI.getPokemonTypes()
+      return {
+        types: result.results,
+        count: result.count
+      }
+    } catch (error) {
+      console.error('Failed to fetch pokemon types:', error)
+      throw new Error('Failed to fetch Pokémon types')
+    }
+  }),
+
+  filterByType: publicProcedure
+    .input(
+      z.object({
+        type: z.string().min(1, 'Type is required'),
+        limit: z.number().min(1).max(50).default(20)
+      })
+    )
+    .query(async ({ input }) => {
+      try {
+        const result = await pokeAPI.filterPokemonByType(input.type, input.limit)
+
+        return {
+          pokemon: result.results,
+          count: result.count,
+          type: result.type,
+          hasMore: result.hasMore,
+          isEmpty: result.results.length === 0
+        }
+      } catch (error) {
+        console.error(`Failed to filter pokemon by type ${input.type}:`, error)
+        throw new Error(`Failed to filter Pokémon by type ${input.type}`)
+      }
+    }),
+
+  searchAndFilter: publicProcedure
+    .input(
+      z.object({
+        query: z.string().min(1, 'Search query is required'),
+        type: z.string().nullable().optional(),
+        limit: z.number().min(1).max(50).default(20)
+      })
+    )
+    .query(async ({ input }) => {
+      try {
+        const result = await pokeAPI.searchAndFilterPokemon(
+          input.query,
+          input.type || null,
+          input.limit
+        )
+
+        return {
+          pokemon: result.results,
+          count: result.count,
+          query: result.query,
+          type: input.type || null,
+          hasMore: result.hasMore,
+          isEmpty: result.results.length === 0
+        }
+      } catch (error) {
+        console.error('Failed to search and filter pokemon:', error)
+        throw new Error('Failed to search and filter Pokémon')
+      }
     })
 })

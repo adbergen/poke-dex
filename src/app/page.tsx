@@ -2,22 +2,34 @@
 
 import { useState } from 'react'
 
+import FilterControls from '@/components/FilterControls'
+import PokemonFilteredResults from '@/components/PokemonFilteredResults'
 import PokemonGrid from '@/components/PokemonGrid'
-import PokemonSearchResults from '@/components/PokemonSearchResults'
-import SearchBar from '@/components/SearchBar'
 
 export default function Home() {
   const [selectedPokemon, setSelectedPokemon] = useState<{ id: number; name: string } | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedType, setSelectedType] = useState<string | null>(null)
 
   const handlePokemonClick = (pokemon: { id: number; name: string }) => {
     setSelectedPokemon(pokemon)
     console.log('Selected Pokemon:', pokemon)
   }
 
-  const handleSearch = (query: string) => {
+  const handleSearchChange = (query: string) => {
     setSearchQuery(query.trim())
   }
+
+  const handleTypeChange = (type: string | null) => {
+    setSelectedType(type)
+  }
+
+  const handleReset = () => {
+    setSearchQuery('')
+    setSelectedType(null)
+  }
+
+  const hasActiveFilters = searchQuery.length > 0 || selectedType !== null
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -26,18 +38,22 @@ export default function Home() {
         <p className="text-gray-600">Discover and explore the world of Pokémon</p>
       </div>
 
-      {/* Search Bar */}
+      {/* Filter Controls */}
       <div className="mb-8">
-        <SearchBar
-          onSearch={handleSearch}
-          className="mx-auto max-w-md"
+        <FilterControls
+          searchQuery={searchQuery}
+          selectedType={selectedType}
+          onSearchChange={handleSearchChange}
+          onTypeChange={handleTypeChange}
+          onReset={handleReset}
         />
       </div>
 
-      {/* Content - either search results or main grid */}
-      {searchQuery ? (
-        <PokemonSearchResults
-          query={searchQuery}
+      {/* Content - either filtered results or main grid */}
+      {hasActiveFilters ? (
+        <PokemonFilteredResults
+          searchQuery={searchQuery}
+          selectedType={selectedType}
           onPokemonClick={handlePokemonClick}
         />
       ) : (
