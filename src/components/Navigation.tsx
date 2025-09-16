@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { LogOut, User } from 'lucide-react'
+import { Heart, LogOut, User } from 'lucide-react'
 
 import { signOut, useSession } from '@/lib/auth-client'
 
@@ -86,6 +86,17 @@ export default function Navigation() {
               </>
             ) : (
               <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  asChild
+                  className="flex items-center space-x-1"
+                >
+                  <Link href="/favorites">
+                    <Heart className="h-4 w-4" />
+                    <span>My Favorites</span>
+                  </Link>
+                </Button>
                 <div className="flex items-center space-x-2 text-sm text-gray-700">
                   <User className="h-4 w-4" />
                   <span>{session.user?.email}</span>
