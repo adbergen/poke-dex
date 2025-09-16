@@ -32,9 +32,27 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center space-x-4">
-            {isPending ? (
-              <div className="text-gray-400">Loading...</div>
-            ) : session ? (
+            {isPending || !session ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  disabled={isPending}
+                  className={isPending ? 'opacity-50' : ''}
+                  asChild={!isPending}
+                >
+                  {isPending ? 'Sign in' : <Link href="/login">Sign in</Link>}
+                </Button>
+                <Button
+                  size="sm"
+                  disabled={isPending}
+                  className={isPending ? 'opacity-50' : ''}
+                  asChild={!isPending}
+                >
+                  {isPending ? 'Sign up' : <Link href="/register">Sign up</Link>}
+                </Button>
+              </>
+            ) : (
               <>
                 <div className="flex items-center space-x-2 text-sm text-gray-700">
                   <User className="h-4 w-4" />
@@ -48,22 +66,6 @@ export default function Navigation() {
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Logout</span>
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  asChild
-                >
-                  <Link href="/login">Sign in</Link>
-                </Button>
-                <Button
-                  size="sm"
-                  asChild
-                >
-                  <Link href="/register">Sign up</Link>
                 </Button>
               </>
             )}
