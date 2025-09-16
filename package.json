@@ -12,11 +12,27 @@
     "db:push": "npx drizzle-kit push"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.0.1",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@tanstack/react-query": "^5.87.4",
+    "@trpc/client": "^11.5.1",
+    "@trpc/next": "^11.5.1",
+    "@trpc/react-query": "^11.5.1",
+    "@trpc/server": "^11.5.1",
+    "better-auth": "^1.3.11",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.5",
+    "lucide-react": "^0.544.0",
     "next": "15.5.3",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-hook-form": "^7.62.0",
+    "superjson": "^2.2.2",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.1.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -29,6 +45,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.8",
     "typescript": "^5"
   }
 }
